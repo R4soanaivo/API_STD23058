@@ -1,0 +1,118 @@
+openapi: 3.0.3
+info:
+  title: STD23058 - TD4
+  version: '1.0.0'
+servers:
+  - url: https://localhost.std23058.com
+paths:
+  /customers/{customerId}/orders:
+    get:
+      summary: Obtenir la liste des commandes d'un client
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: L'identifiant du client.
+          schema:
+            type: string
+      responses:
+        200:
+          description: Liste des commandes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+
+    post:
+      summary: Ajouter une nouvelle commande pour un client
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: L'identifiant du client.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderWithoutDatetime'
+      responses:
+        200:
+          description: Commande créée avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+    put:
+      summary: Mettre à jour une commande existante pour un client
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: L'identifiant du client.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Order'
+      responses:
+        200:
+          description: Commande mise à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        price:
+          type: number
+          format: float
+
+    OrderItem:
+      type: object
+      properties:
+        meal:
+          $ref: '#/components/schemas/Meal'
+        quantity:
+          type: integer
+
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+        orderDatetime:
+          type: string
+          format: date-time
+
+    OrderWithoutDatetime:
+      type: object
+      properties:
+        reference:
+          type: string
+        meals:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem’

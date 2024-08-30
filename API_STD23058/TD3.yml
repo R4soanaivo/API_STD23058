@@ -1,0 +1,88 @@
+openapi: 3.0.0
+info:
+  title: API des Plats
+  version: 1.0.0
+paths:
+  /meals:
+    get:
+      summary: Récupérer une liste de plats avec pagination
+      parameters:
+        - name: page
+          in: query
+          required: true
+          schema:
+            type: integer
+        - name: pageSize
+          in: query
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Une liste de plats
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+    post:
+      summary: Créer de nouveaux plats
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Meal'
+      responses:
+        '201':
+          description: Plats créés avec succès
+  /meals/{name}:
+    put:
+      summary: Mettre à jour un plat existant
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Meal'
+      responses:
+        '200':
+          description: Plat mis à jour avec succès
+    delete:
+      summary: Supprimer des plats par nom
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+      responses:
+        '200':
+          description: Liste des plats supprimés
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Meal'
+components:
+  schemas:
+    Meal:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: float

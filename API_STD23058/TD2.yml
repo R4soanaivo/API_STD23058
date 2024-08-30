@@ -1,0 +1,115 @@
+openapi: 3.0.3
+info:
+  title: STD23058 - TD2
+  version: '1.0.0'
+servers:
+  - url: https://localhost.std23058.com
+paths:
+  '/customers':
+    get:
+      tags:
+      - User
+      summary: Obtenir une liste paginée de clients
+      parameters:
+        - name: page
+          in: query
+          required: true
+          description: Le numéro de la page à récupérer.
+          schema:
+            type: integer
+            example: 1
+        - name: pageSize
+          in: query
+          required: true
+          description: Le nombre de clients par page.
+          schema:
+            type: integer
+            example: 10
+      responses:
+        200:
+          description: Liste des clients
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    post:
+      summary: Créer une liste de nouveaux clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CustomerWithoutID'
+      responses:
+        200:
+          description: Clients créés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    put:
+      summary: Mettre à jour une liste de clients existants
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Customer'
+      responses:
+        200:
+          description: Clients mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+    delete:
+      summary: Supprimer un ou plusieurs clients
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ids:
+                  type: array
+                  items:
+                    type: string
+      responses:
+        200:
+          description: Clients supprimés avec succès
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Customer'
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+    CustomerWithoutID:
+      type: object
+      properties:
+        name:
+          type: string
+        age:
+          type: integer
+

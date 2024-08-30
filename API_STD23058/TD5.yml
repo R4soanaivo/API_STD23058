@@ -1,0 +1,73 @@
+openapi: 3.0.3
+info:
+  title: STD23058 - TD5
+  version: '1.0.0'
+servers:
+  - url: https://localhost.std23058.com
+paths:
+  /customers/{customerId}:
+    put:
+      summary: Mise à jour complète d'un Customer
+      description: Remplace toutes les informations d'un Customer. Tous les attributs doivent être fournis dans le requestBody.
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: L'identifiant unique du Customer.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Customer'
+      responses:
+        200:
+          description: Customer mis à jour avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+    patch:
+      summary: Modification partielle d'un Customer
+      description: Modifie une ou plusieurs propriétés d'un Customer. Seules les propriétés à modifier doivent être fournies dans le requestBody.
+      parameters:
+        - name: customerId
+          in: path
+          required: true
+          description: L'identifiant unique du Customer.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                age:
+                  type: integer
+      responses:
+        200:
+          description: Customer mis à jour partiellement avec succès
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Customer'
+
+components:
+  schemas:
+    Customer:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        age:
+          type: integer
+
